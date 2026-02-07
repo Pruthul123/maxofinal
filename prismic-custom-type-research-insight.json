@@ -1,0 +1,53 @@
+{
+  "Main": {
+    "title": {
+      "type": "Text",
+      "config": {
+        "label": "Title",
+        "placeholder": "Research & Insight title",
+        "isTitle": true
+      }
+    },
+    "date": {
+      "type": "Text",
+      "config": {
+        "label": "Date",
+        "placeholder": "e.g., October 2024"
+      }
+    },
+    "description": {
+      "type": "StructuredText",
+      "config": {
+        "label": "Description",
+        "placeholder": "Short summary (1-2 sentences)",
+        "allowTargetBlank": true,
+        "single": "paragraph"
+      }
+    },
+    "content": {
+      "type": "StructuredText",
+      "config": {
+        "label": "Content",
+        "placeholder": "Main body content",
+        "allowTargetBlank": true
+      }
+    },
+    "author": {
+      "type": "Text",
+      "config": {
+        "label": "Author",
+        "placeholder": "e.g., Sarah Johnson, Creative Director"
+      }
+    },
+    "image": {
+      "type": "Image",
+      "config": {
+        "label": "Featured Image",
+        "constraint": {
+          "width": 800,
+          "height": 600
+        }
+      }
+    }
+  }
+}

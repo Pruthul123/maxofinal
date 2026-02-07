@@ -1,0 +1,363 @@
+/* OurWork Component Styles */
+.ourwork-section {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #e8e8e8;
+  color: #000;
+  padding-bottom: 100px;
+}
+
+/* Header */
+.ourwork-header {
+  padding: 140px 80px 80px;
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ourwork-header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.ourwork-label {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+.ourwork-title {
+  font-size: 64px;
+  font-weight: 300;
+  line-height: 1.1;
+  margin: 0 0 24px 0;
+  color: #000;
+}
+
+.ourwork-title .italic {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.ourwork-subtitle {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.6);
+  max-width: 600px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Projects Grid */
+
+.ourwork-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 60px 4%;
+  padding: 80px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* 4-column grid for 8 projects */
+.ourwork-grid-4cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 60px 4%;
+  padding: 80px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.ourwork-item {
+  width: 100%;
+}
+
+/* Item Header */
+.ourwork-item-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+}
+
+.ourwork-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #000;
+}
+
+.ourwork-item-title {
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+
+/* Project Card */
+.ourwork-card {
+  width: 100%;
+  cursor: pointer;
+}
+
+.ourwork-card-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.ourwork-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ourwork-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  pointer-events: none;
+}
+
+.ourwork-view-button {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #000;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.ourwork-card-description {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 1.6;
+  margin: 20px 0 0;
+}
+
+/* Tags */
+.ourwork-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.ourwork-tag {
+  display: inline-block;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 30px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ourwork-tag:hover {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* CTA Button */
+.ourwork-cta {
+  display: flex;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.ourwork-cta-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 36px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ourwork-cta-button:hover {
+  background: #222;
+}
+
+/* ================================
+   TABLET STYLES (768px - 1024px)
+   ================================ */
+@media screen and (max-width: 1024px) {
+  .ourwork-header {
+    padding: 120px 40px 60px;
+  }
+
+  .ourwork-title {
+    font-size: 48px;
+  }
+
+  .ourwork-subtitle {
+    font-size: 16px;
+  }
+
+  .ourwork-grid {
+    padding: 60px 40px;
+    gap: 50px 4%;
+  }
+
+  .ourwork-grid-4cols {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 60px 40px;
+    gap: 50px 4%;
+  }
+
+  .ourwork-item {
+    width: 48%;
+  }
+}
+
+/* ================================
+   MOBILE STYLES (below 768px)
+   ================================ */
+@media screen and (max-width: 767px) {
+  .ourwork-header {
+    padding: 100px 20px 50px;
+  }
+
+  .ourwork-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  .ourwork-title {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+
+  .ourwork-subtitle {
+    font-size: 14px;
+    max-width: 100%;
+  }
+
+  .ourwork-grid {
+    padding: 40px 20px;
+    gap: 50px;
+    overflow-x: hidden;
+  }
+
+  /* Single column layout on mobile */
+  .ourwork-grid-4cols {
+    grid-template-columns: 1fr;
+    padding: 40px 20px;
+    gap: 50px;
+  }
+
+  .ourwork-item {
+    width: 100%;
+  }
+
+  .ourwork-item-header {
+    gap: 10px;
+    padding-bottom: 12px;
+  }
+
+  .ourwork-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .ourwork-item-title {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+  }
+
+  .ourwork-card-image-wrapper {
+    aspect-ratio: 16/12;
+    border-radius: 12px;
+  }
+
+  .ourwork-view-button {
+    bottom: 16px;
+    left: 16px;
+    padding: 10px 16px;
+    font-size: 11px;
+  }
+
+  .ourwork-card-description {
+    font-size: 14px;
+    margin-top: 16px;
+  }
+
+  .ourwork-tags {
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .ourwork-tag {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  .ourwork-cta {
+    padding-top: 40px;
+  }
+
+  .ourwork-cta-button {
+    padding: 14px 28px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+  }
+}
+
+/* ================================
+   SMALL MOBILE STYLES (below 480px)
+   ================================ */
+@media screen and (max-width: 480px) {
+  .ourwork-header {
+    padding: 90px 16px 40px;
+  }
+
+  .ourwork-title {
+    font-size: 28px;
+  }
+
+  .ourwork-grid {
+    padding: 32px 16px;
+    overflow-x: hidden;
+  }
+
+  /* Ensure single column on extra small screens */
+  .ourwork-grid-4cols {
+    grid-template-columns: 1fr;
+    padding: 32px 16px;
+  }
+
+  .ourwork-tag {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}

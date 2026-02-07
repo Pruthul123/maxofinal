@@ -1,0 +1,76 @@
+.tilted-card-figure {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  /* Crucial for mobile: prevents page scroll while dragging the card */
+  touch-action: none; 
+}
+
+.tilted-card-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  /* Ensure the card never overflows the screen width */
+  max-width: 100%; 
+}
+
+.tilted-card-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  border-radius: 15px;
+  will-change: transform;
+  transform: translateZ(0);
+  filter: grayscale(100%);
+  transition: filter 0.4s ease;
+  /* Responsive constraints */
+  max-width: 100%;
+  height: auto; 
+}
+
+.tilted-card-img:hover,
+.tilted-card-figure:active .tilted-card-img {
+  /* :active handles the touch state */
+  filter: grayscale(0%);
+}
+
+.tilted-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  will-change: transform;
+  transform: translateZ(30px);
+}
+
+.tilted-card-caption {
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 4px;
+  background-color: #e8e8e8;
+  padding: 4px 10px;
+  font-size: 10px;
+  color: #2d2d2d;
+  opacity: 0;
+  z-index: 3;
+  white-space: nowrap;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 640px) {
+  .tilted-card-caption {
+    /* Floating captions are bad UX on mobile because your finger covers them.
+      We hide it here. If you want a static caption, you can change this 
+      to position: relative; and bottom: -20px; 
+    */
+    display: none; 
+  }
+}

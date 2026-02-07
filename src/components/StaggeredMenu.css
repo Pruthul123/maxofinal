@@ -1,0 +1,633 @@
+.staggered-menu-wrapper {
+  position: relative;
+  z-index: 100;
+  font-family: var(--font-primary);
+}
+
+:root {
+  /* Laptop/desktop: menu should cover ~70% of viewport */
+  --sm-panel-width: 70vw;
+  --sm-handle-width: 40px;
+  --sm-edge-zone-width: var(--sm-handle-width);
+  --sm-safe-gutter-left: var(--sm-handle-width);
+}
+
+/* Edge hover zone + revealable handle */
+.sm-edge-zone {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sm-edge-zone-width);
+  height: 100vh;
+  z-index: 20004;
+  pointer-events: auto;
+  will-change: transform;
+  background: transparent;
+  overflow: visible;
+  transition: width 0.25s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* When the handle nudges, keep the exposed gap black (not transparent). */
+.sm-edge-zone:hover {
+  background: #fff;
+}
+
+.staggered-menu-wrapper[data-position="right"] .sm-edge-zone {
+  left: auto;
+  right: 0;
+}
+
+/* Fixed handle (always visible) */
+.sm-edge-toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  opacity: 1;
+  transform: translateX(0) scaleX(1);
+  transform-origin: left center;
+  transition: transform 0.25s cubic-bezier(0.76, 0, 0.24, 1);
+  pointer-events: auto;
+}
+
+/* Hover interaction: nudge + slightly widen the black bar */
+/* Left menu: expand/nudge to the RIGHT (into the screen) */
+.sm-edge-zone:hover .sm-edge-toggle {
+  transform-origin: left center;
+  transform: translateX(6px) scaleX(1.18);
+}
+
+/* Right menu: expand/nudge to the LEFT (into the screen) */
+.staggered-menu-wrapper[data-position="right"] .sm-edge-zone:hover .sm-edge-toggle {
+  transform-origin: right center;
+  transform: translateX(-6px) scaleX(1.18);
+}
+
+.staggered-menu-wrapper[data-position="right"] .sm-edge-toggle {
+  left: auto;
+  right: 0;
+}
+
+.staggered-menu-wrapper[data-position="right"] .sm-edge-toggle {
+  left: auto;
+  right: 0;
+  border-radius: 0;
+}
+
+.sm-edge-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 14px;
+  height: 16px;
+}
+
+.sm-edge-line {
+  display: block;
+  width: 3px;
+  height: 52px;
+  background: #000;
+  transform-origin: 50% 50%;
+}
+
+
+
+.staggered-menu-wrapper.fixed-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0; /* Don't block clicks when closed */
+}
+
+.staggered-menu-wrapper[data-open="true"] {
+  height: 100vh;
+}
+
+.sm-prelayers {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sm-panel-width); /* Match panel width */
+  height: 100%;
+  pointer-events: none;
+  z-index: 20002;
+}
+
+.staggered-menu-wrapper[data-position="right"] .sm-prelayers {
+  left: auto;
+  right: 0;
+}
+
+.sm-prelayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+
+.staggered-menu-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 110;
+  pointer-events: none; /* Let clicks pass through to page content */
+  box-sizing: border-box;
+}
+
+.staggered-menu-header > * {
+  pointer-events: auto; /* Re-enable clicks for logo and button */
+}
+
+.sm-logo {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  mix-blend-mode: difference;
+}
+
+.sm-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: black;
+  z-index: 120;
+  /* mix-blend-mode: difference; Removed to allow glass effect color */
+}
+
+.liquid-glass-btn {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
+
+.liquid-glass-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 40px rgba(0, 0, 0, 0.2);
+}
+
+.sm-social-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  z-index: 120;
+}
+
+.sm-social-btn {
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+}
+
+.liquid-glass-panel {
+  position: absolute;
+  right: 60px; /* To the left of the button */
+  top: 0;
+  display: flex;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+  padding: 6px 12px;
+  align-items: center;
+  height: 44px;
+  box-sizing: border-box;
+}
+
+.sm-social-icon {
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.sm-social-icon:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sm-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.sm-icon-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: black;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 1px white;
+}
+
+.sm-social-btn {
+  color: black !important;
+}
+
+.sm-social-btn svg {
+  filter: none;
+}
+
+.staggered-menu-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sm-panel-width);
+  height: 100%;
+  z-index: 20003;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* Initially hidden/offscreen */
+  background: #fff; /* Ensure background is opaque */
+}
+
+.staggered-menu-wrapper[data-position="right"] .staggered-menu-panel {
+  left: auto;
+  right: 0;
+}
+
+.staggered-menu-wrapper[data-open="true"] .staggered-menu-panel {
+  pointer-events: auto;
+}
+
+.sm-panel-inner {
+  width: 100%;
+  max-width: 1200px;
+  padding: 28px;
+  padding-right: calc(28px + var(--sm-handle-width));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Push content apart */
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --sm-panel-width: 100vw;
+    --sm-handle-width: 20px;
+    --sm-edge-zone-width: var(--sm-handle-width);
+    --sm-safe-gutter-left: var(--sm-handle-width);
+  }
+
+  /* On phones: keep the handle always visible but minimal */
+  .sm-edge-toggle {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .sm-edge-icon {
+    display: none;
+  }
+
+  /* Single standing line on the mobile handle */
+  .sm-edge-toggle::after {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 52px;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 1px;
+  }
+
+  .sm-panel-inner {
+    padding: 20px;
+  }
+}
+
+/* Mobile close button (top-right) */
+.sm-mobile-close {
+  display: none;
+}
+
+/* Home logo inside open menu (top-left) */
+.sm-menu-home {
+  display: none;
+}
+
+.staggered-menu-wrapper[data-open="true"] .sm-menu-home {
+  display: inline-flex;
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 20010;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.staggered-menu-wrapper[data-open="true"] .sm-menu-home img {
+  width: 128px;
+  height: auto;
+  display: block;
+}
+
+/* Right-side meta (desktop only) */
+.sm-menu-desktop-right {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .staggered-menu-wrapper[data-open="true"] .sm-menu-desktop-right {
+    display: block;
+  }
+
+  .staggered-menu-wrapper[data-open="true"] .sm-menu-address {
+    position: absolute;
+    top: 22px;
+    right: calc(24px + var(--sm-handle-width));
+    z-index: 20010;
+    color: rgba(0, 0, 0, 0.9);
+    text-align: right;
+    max-width: 380px;
+    pointer-events: auto;
+  }
+
+  .sm-menu-address-title {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.7);
+    margin-bottom: 10px;
+  }
+
+  .sm-menu-address-lines {
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.9);
+  }
+
+  .staggered-menu-wrapper[data-open="true"] .sm-menu-bottom {
+    position: absolute;
+    right: calc(24px + var(--sm-handle-width));
+    bottom: 22px;
+    z-index: 20010;
+    text-align: right;
+    pointer-events: auto;
+  }
+
+  .sm-menu-links {
+    display: flex;
+    gap: 18px;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+
+  .sm-menu-links a {
+    color: rgba(0, 0, 0, 0.85);
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .sm-menu-links a:hover {
+    color: #000;
+  }
+
+  .sm-menu-email {
+    color: rgba(0, 0, 0, 0.85);
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .sm-menu-email:hover {
+    color: #000;
+  }
+}
+
+@media (max-width: 768px) {
+  .staggered-menu-wrapper[data-open="true"] .sm-mobile-close {
+    display: inline-flex;
+    position: absolute;
+    top: 16px;
+    right: calc(16px + var(--sm-handle-width));
+    z-index: 20010;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 14px;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.7);
+    color: #000;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .staggered-menu-wrapper[data-open="true"] .sm-mobile-close:hover {
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .staggered-menu-wrapper[data-open="true"] .sm-menu-home {
+    top: 16px;
+    left: 16px;
+  }
+
+  .staggered-menu-wrapper[data-open="true"] .sm-menu-home img {
+    width: 104px;
+  }
+}
+
+.sm-panel-list {
+  list-style: none;
+  padding: 0;
+  margin: auto 0; /* Center vertically if space allows */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sm-panel-itemWrap {
+  overflow: hidden;
+}
+
+.sm-panel-item {
+  display: block;
+  font-size: 3rem; /* Reduced font size */
+  font-weight: 400;
+  color: black;
+  text-decoration: none;
+  text-transform: uppercase;
+  line-height: 1.1;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.sm-panel-item:hover {
+  color: var(--sm-accent, #5227FF);
+}
+
+.sm-panel-itemLabel {
+  display: block;
+}
+
+.sm-panel-list[data-numbering] .sm-panel-item::before {
+  content: attr(data-index);
+  position: absolute;
+  left: -40px; /* Adjusted for larger font */
+  top: 10px;
+  font-size: 1rem;
+  font-weight: 400;
+  opacity: var(--sm-num-opacity, 0);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.sm-socials {
+  margin-top: 20px;
+  align-self: flex-start; /* Align to left */
+  display: none; /* Hide original social section since we have it in left-bottom */
+}
+
+.sm-socials-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 15px;
+  display: none; /* Hide title if we just want icons */
+}
+
+.sm-socials-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 20px;
+}
+
+.sm-socials-link {
+  color: black;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sm-socials-link:hover {
+  color: var(--sm-accent, #5227FF);
+}
+
+/* Left Side Bottom Section */
+.sm-left-bottom {
+  position: absolute;
+  bottom: 30px;
+  left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.sm-left-socials {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.sm-left-socials a {
+  display: flex;
+  transition: opacity 0.3s ease;
+}
+
+.sm-left-socials a:hover {
+  opacity: 0.7;
+}
+
+.sm-privacy-link {
+  color: rgba(0, 0, 0, 0.7);
+  text-decoration: none;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.sm-privacy-link:hover {
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .staggered-menu-panel,
+  .sm-prelayers {
+    width: 100%; /* Full width on mobile */
+  }
+
+  .staggered-menu-header {
+    padding: 15px 20px;
+  }
+  
+  .sm-logo {
+    position: static;
+    transform: none;
+    order: -1;
+    margin-right: auto;
+  }
+
+  .sm-toggle {
+    order: 2;
+  }
+
+  .sm-social-wrapper {
+    order: 1;
+    margin-right: 10px;
+  }
+  
+  .sm-panel-item {
+    font-size: 1.6rem;
+  }
+  
+  .sm-panel-list[data-numbering] .sm-panel-item::before {
+    display: none;
+  }
+  
+  .sm-left-bottom {
+    left: 20px;
+    bottom: 20px;
+  }
+}
