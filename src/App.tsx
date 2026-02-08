@@ -111,7 +111,7 @@ export function MaxoLanding() {
         ref={videoRef}
         muted
         playsInline
-        src={isMobile ? "https://maxo-architecture.cdn.prismic.io/maxo-architecture/aYTkbt0YXLCxVd4O_IMG_6217.MOV" : "/MAXO_1.mp4"}
+        src={isMobile ? "https://maxo-architecture.cdn.prismic.io/maxo-architecture/aYgvvt0YXLCxVk_O_Create_a_cinematic_1080p_202602081203.mp4" : "/MAXO_1.mp4"}
         style={{
           position: 'fixed',
           top: isMobile ? '-10%' : 0,
