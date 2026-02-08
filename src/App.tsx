@@ -23,7 +23,27 @@ import NotFound from './components/NotFound';
 export function MaxoLanding() {
   const [isPreloading, setIsPreloading] = useState(true);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Detect iOS/Safari for special handling
+  const isIOS = useRef(false);
+  const isSafari = useRef(false);
+  
+  useEffect(() => {
+    // Detect iOS and Safari
+    if (typeof window !== 'undefined') {
+      const ua = window.navigator.userAgent;
+      isIOS.current = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      isSafari.current = /^((?!chrome|android).)*safari/i.test(ua);
+    }
+  }, []);
+  
+  // Set initial mobile state
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth < 768);
+    }
+  }, []);
   
   // Scroll to top when component mounts
   useEffect(() => {
@@ -32,28 +52,81 @@ export function MaxoLanding() {
 
   // Trigger transition when assets are loaded
   useEffect(() => {
-    // Pause video initially to "freeze" until loaded
+    let preloaderTimeout: ReturnType<typeof setTimeout>;
+    let videoTimeout: ReturnType<typeof setTimeout>;
+    let hasResolved = false;
+    
+    const resolvePreloader = () => {
+      if (hasResolved) return;
+      hasResolved = true;
+      
+      // Play video if available
+      if (videoRef.current) {
+        videoRef.current.play().catch(() => {
+          // Autoplay blocked - this is fine
+          console.log('Video autoplay blocked');
+        });
+      }
+      
+      // Wait 5 seconds then hide preloader
+      setTimeout(() => {
+        setIsPreloading(false);
+      }, 5000);
+    };
+
+    // CRITICAL: Timeout failsafe for iOS
+    // On iOS, video may never load - ensure preloader always resolves
+    preloaderTimeout = setTimeout(() => {
+      console.log('Preloader timeout reached');
+      resolvePreloader();
+    }, 8000); // 8 second max wait
+
+    // Try to pause video initially
     if (videoRef.current) {
       videoRef.current.pause();
     }
 
-    // 1. Wait for Video to be ready
+    // On iOS/Safari: Skip video preloading, resolve immediately after window load
+    if (isIOS.current || isSafari.current) {
+      if (document.readyState === 'complete') {
+        resolvePreloader();
+      } else {
+        window.addEventListener('load', resolvePreloader, { once: true });
+      }
+      return () => {
+        clearTimeout(preloaderTimeout);
+      };
+    }
+
+    // Non-iOS: Wait for video to be ready
     const videoPromise = new Promise((resolve) => {
       const video = videoRef.current;
       if (!video) {
         resolve(true);
         return;
       }
+      
+      // Video timeout - don't wait forever
+      videoTimeout = setTimeout(() => resolve(true), 5000);
+      
       if (video.readyState >= 3) {
+        clearTimeout(videoTimeout);
         resolve(true);
       } else {
-        const handleCanPlay = () => resolve(true);
+        const handleCanPlay = () => {
+          clearTimeout(videoTimeout);
+          resolve(true);
+        };
         video.addEventListener('canplaythrough', handleCanPlay, { once: true });
-        video.addEventListener('error', () => resolve(true), { once: true });
+        video.addEventListener('loadeddata', handleCanPlay, { once: true });
+        video.addEventListener('error', () => {
+          clearTimeout(videoTimeout);
+          resolve(true);
+        }, { once: true });
       }
     });
 
-    // 2. Wait for Window load (images, scripts, etc.)
+    // Wait for Window load
     const windowLoadPromise = new Promise((resolve) => {
       if (document.readyState === 'complete') {
         resolve(true);
@@ -62,39 +135,36 @@ export function MaxoLanding() {
       }
     });
 
-    // Wait for assets to load
-    Promise.all([videoPromise, windowLoadPromise]).then(() => {
-      // Once loaded, play video and start the 5s timer (configured with video)
-      if (videoRef.current) {
-        videoRef.current.play().catch(() => {
-          // Handle autoplay block if necessary
-        });
-      }
-      
-      setTimeout(() => {
-        setIsPreloading(false);
-      }, 5000);
-    });
+    // Wait for assets to load (non-iOS)
+    Promise.all([videoPromise, windowLoadPromise]).then(resolvePreloader);
 
+    return () => {
+      clearTimeout(preloaderTimeout);
+      if (videoTimeout) clearTimeout(videoTimeout);
+    };
   }, []);
 
   // Detect mobile to switch to side-drawer behavior
   useEffect(() => {
-    const update = () => setIsMobile(typeof window !== 'undefined' && window.innerWidth < 768);
-    update();
+    const update = () => {
+      if (typeof window !== 'undefined') {
+        setIsMobile(window.innerWidth < 768);
+      }
+    };
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  // Block scroll during preload
+  // Block scroll during preload - CRITICAL: Always cleanup
   useEffect(() => {
     if (isPreloading) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     }
+    // ALWAYS restore scroll on unmount
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     };
   }, [isPreloading]);
 
@@ -111,7 +181,13 @@ export function MaxoLanding() {
         ref={videoRef}
         muted
         playsInline
+        autoPlay={false}
+        preload="metadata"
         src={isMobile ? "https://maxo-architecture.cdn.prismic.io/maxo-architecture/aYgvvt0YXLCxVk_O_Create_a_cinematic_1080p_202602081203.mp4" : "/MAXO_1.mp4"}
+        onError={(e) => {
+          console.log('Video failed to load:', e);
+          // Don't let video errors block the site
+        }}
         style={{
           position: 'fixed',
           top: isMobile ? '-10%' : 0,
@@ -225,7 +301,14 @@ function AppRoutes() {
 
   // Helper wrapper to include SharedHeader on non-landing pages
   function PageWrapper({ children }: { children: React.ReactNode }) {
-    const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+    const [isMobile, setIsMobile] = useState(false);
+    
+    useEffect(() => {
+      // Set initial mobile state
+      if (typeof window !== 'undefined') {
+        setIsMobile(window.innerWidth < 768);
+      }
+    }, []);
     
     useEffect(() => {
       // Scroll to top when page loads
@@ -233,7 +316,11 @@ function AppRoutes() {
     }, []);
     
     useEffect(() => {
-      const update = () => setIsMobile(typeof window !== 'undefined' && window.innerWidth < 768);
+      const update = () => {
+        if (typeof window !== 'undefined') {
+          setIsMobile(window.innerWidth < 768);
+        }
+      };
       window.addEventListener('resize', update);
       return () => window.removeEventListener('resize', update);
     }, []);
