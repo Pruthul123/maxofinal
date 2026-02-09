@@ -194,9 +194,9 @@ export default function WorkProjectPage() {
       <SEO 
         title={`${title || 'Project'} | MAXO Architects`}
         description={`Discover ${title || 'this project'} by MAXO Architects. ${address || ''} Expert architectural design and innovative solutions.`}
-        keywords={`MAXO ${title || 'project'}, ${categoryTitle || 'architecture'}, architectural design, ${address || ''}`}
-        url={`https://maxo.co.in/work/${categoryUid}/${projectUid}`}
-        image={heroUrl || "https://maxo.co.in/maxo-logo.jpeg"}
+        keywords={`MAXO ${title || 'project'}, ${categoryTitle || 'architecture'}, architectural design, building design`}
+        url={`https://www.maxo.co.in/work/${categoryUid}/${projectUid}`}
+        image={heroUrl || "https://www.maxo.co.in/maxo-logo.jpeg"}
       />
       
       <StaggeredMenu

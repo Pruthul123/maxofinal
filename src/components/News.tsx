@@ -31,9 +31,9 @@ export default function News({ navigateTo }: { navigateTo: (page: string) => voi
       <SEO 
         title="News & Updates | MAXO Architects & Designers"
         description="Stay updated with the latest news, projects, and insights from MAXO Architects & Designers. Discover our recent work and architectural innovations."
-        keywords="MAXO news, architecture updates, design news, architectural projects, MAXO announcements"
-        url="https://maxo.co.in/news"
-        image="https://maxo.co.in/maxo-logo.jpeg"
+        keywords="MAXO news, architecture updates, design news, architectural projects, MAXO announcements, architecture firm news"
+        url="https://www.maxo.co.in/news"
+        image="https://www.maxo.co.in/maxo-logo.jpeg"
       />
       
       {/* Navigation */}

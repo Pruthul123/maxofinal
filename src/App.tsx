@@ -17,6 +17,7 @@ import WorkCategoryPage from './components/work/WorkCategoryPage';
 import WorkProjectPage from './components/work/WorkProjectPage';
 import ResearchInsightPage from './components/ResearchInsightPage';
 import NotFound from './components/NotFound';
+import SEO from './components/SEO';
 
 
 
@@ -168,8 +169,48 @@ export function MaxoLanding() {
     };
   }, [isPreloading]);
 
+  // Organization Schema for global SEO
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "MAXO",
+    "legalName": "MAXO Architects & Designers",
+    "url": "https://www.maxo.co.in",
+    "logo": "https://www.maxo.co.in/maxo-logo.jpeg",
+    "foundingDate": "2020",
+    "description": "Award-winning architecture and design firm specializing in sustainable, innovative, and contemporary architectural solutions",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "1215, Maple Trade Centre, Thaltej",
+      "addressLocality": "Ahmedabad",
+      "addressRegion": "Gujarat",
+      "postalCode": "380052",
+      "addressCountry": "IN"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-92270-01016",
+      "contactType": "Customer Service",
+      "email": "info@maxo.co.in",
+      "areaServed": "IN",
+      "availableLanguage": ["English", "Hindi", "Gujarati"]
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/maxo-architects"
+    ]
+  };
+
   return (
     <div style={{ position: 'relative', width: '100%', backgroundColor: 'black', color: 'white', minHeight: '100vh' }}>
+      <SEO 
+        title="MAXO | Award-Winning Architects & Designers"
+        description="MAXO is an award-winning architecture and design firm creating sustainable, innovative, and contemporary architectural solutions. Discover our portfolio of residential, commercial, and public space projects."
+        keywords="architecture firm, architects, interior designers, sustainable architecture, contemporary design, architectural services, building design, MAXO architects, Ahmedabad architects"
+        image="https://www.maxo.co.in/maxo-logo.jpeg"
+        url="https://www.maxo.co.in/"
+        type="website"
+        schema={organizationSchema}
+      />
       
       {/* Main Landing Container - Full Screen */}
       <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', backgroundColor: 'black' }}>

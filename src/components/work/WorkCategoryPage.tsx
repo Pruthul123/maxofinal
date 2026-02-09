@@ -96,8 +96,8 @@ export default function WorkCategoryPage() {
       <SEO 
         title={`${category?.data?.title || 'Category'} Projects | MAXO Architects`}
         description={category?.data?.description || `Explore MAXO's ${category?.data?.title || 'architectural'} projects. Innovative design solutions and expert architectural services.`}
-        keywords={`MAXO ${category?.data?.title || 'projects'}, ${category?.data?.title || 'architecture'}, architectural design, ${categoryUid}`}
-        url={`https://maxo.co.in/work/${categoryUid}`}
+        keywords={`MAXO ${category?.data?.title || 'projects'}, ${category?.data?.title || 'architecture'}, architectural design, architecture portfolio`}
+        url={`https://www.maxo.co.in/work/${categoryUid}`}
         image="https://maxo.co.in/maxo-logo.jpeg"
       />
       

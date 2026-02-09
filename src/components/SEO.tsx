@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 interface SEOProps {
   title: string;
@@ -6,52 +6,69 @@ interface SEOProps {
   keywords?: string;
   image?: string;
   url?: string;
+  type?: 'website' | 'article';
+  author?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  schema?: Record<string, any>;
 }
 
-export default function SEO({ title, description, keywords, image, url }: SEOProps) {
-  useEffect(() => {
-    // Update title
-    document.title = title;
+const defaultSiteImage = 'https://www.maxo.co.in/maxo-logo.jpeg';
+const siteName = 'MAXO | Architects & Designers';
 
-    // Update or create meta tags
-    const updateMeta = (name: string, content: string, isProperty = false) => {
-      const attr = isProperty ? 'property' : 'name';
-      let element = document.querySelector(`meta[${attr}="${name}"]`);
-      
-      if (!element) {
-        element = document.createElement('meta');
-        element.setAttribute(attr, name);
-        document.head.appendChild(element);
-      }
-      element.setAttribute('content', content);
-    };
+export default function SEO({ 
+  title, 
+  description, 
+  keywords, 
+  image, 
+  url, 
+  type = 'website',
+  author,
+  publishedTime,
+  modifiedTime,
+  schema
+}: SEOProps) {
+  // Fallback values
+  const seoImage = image || defaultSiteImage;
+  const fullTitle = title.includes('MAXO') ? title : `${title} | MAXO`;
+  const canonicalUrl = url && !url.includes('undefined') ? url : 'https://www.maxo.co.in/';
 
-    // Basic meta tags
-    updateMeta('description', description);
-    if (keywords) updateMeta('keywords', keywords);
+  return (
+    <Helmet>
+      {/* Primary Meta Tags */}
+      <title>{fullTitle}</title>
+      <meta name="title" content={fullTitle} />
+      <meta name="description" content={description} />
+      {keywords && <meta name="keywords" content={keywords} />}
+      <meta name="robots" content="index, follow" />
+      <link rel="canonical" href={canonicalUrl} />
 
-    // Open Graph tags
-    updateMeta('og:title', title, true);
-    updateMeta('og:description', description, true);
-    if (url) updateMeta('og:url', url, true);
-    if (image) updateMeta('og:image', image, true);
+      {/* Open Graph / Facebook */}
+      <meta property="og:type" content={type} />
+      <meta property="og:url" content={canonicalUrl} />
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={seoImage} />
+      <meta property="og:site_name" content={siteName} />
 
-    // Twitter tags
-    updateMeta('twitter:title', title, true);
-    updateMeta('twitter:description', description, true);
-    if (image) updateMeta('twitter:image', image, true);
+      {/* Article specific Open Graph tags */}
+      {type === 'article' && author && <meta property="article:author" content={author} />}
+      {type === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime} />}
+      {type === 'article' && modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
 
-    // Update canonical URL
-    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-    if (url) {
-      if (!canonical) {
-        canonical = document.createElement('link');
-        canonical.setAttribute('rel', 'canonical');
-        document.head.appendChild(canonical);
-      }
-      canonical.href = url;
-    }
-  }, [title, description, keywords, image, url]);
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:url" content={canonicalUrl} />
+      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={seoImage} />
 
-  return null;
+      {/* Structured Data / Schema.org */}
+      {schema && (
+        <script type="application/ld+json">
+          {JSON.stringify(schema)}
+        </script>
+      )}
+    </Helmet>
+  );
 }

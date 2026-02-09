@@ -333,9 +333,9 @@ export default function AboutUs() {
       <SEO 
         title="About MAXO | Divya Patel - Founder & Principal Architect"
         description="Meet Divya Patel, founder of MAXO Architects & Designers. With experience at Bartlett School of Architecture and Benoy London, we bring global design expertise and innovation to every project."
-        keywords="Divya Patel architect, MAXO founder, Bartlett School of Architecture, Benoy London, architectural firm about, architecture team"
-        url="https://maxo.co.in/about"
-        image="https://maxo.co.in/founder.jpeg"
+        keywords="Divya Patel architect, MAXO founder, Bartlett School of Architecture, Benoy London, architectural firm about, architecture team, principal architect"
+        url="https://www.maxo.co.in/about"
+        image="https://www.maxo.co.in/founder.jpeg"
       />
       
       <StaggeredMenu 

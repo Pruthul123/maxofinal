@@ -168,10 +168,9 @@ export default function OurWork() {
       <SEO 
         title="Our Work & Projects | MAXO Architects & Designers Portfolio"
         description="Explore MAXO's portfolio of innovative architectural projects. From residential design to commercial architecture, urban planning, and sustainable solutions across diverse sectors."
-        keywords="MAXO projects, architecture portfolio, residential architecture, commercial architecture, urban planning, architectural design projects, 
-        "
-        url="https://maxo.co.in/work"
-        image="https://maxo.co.in/maxo-logo.jpeg"
+        keywords="MAXO projects, architecture portfolio, residential architecture, commercial architecture, urban planning, architectural design projects, building design showcase"
+        url="https://www.maxo.co.in/work"
+        image="https://www.maxo.co.in/maxo-logo.jpeg"
       />
       
       {/* Navigation Menu */}
