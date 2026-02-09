@@ -10,6 +10,12 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "overrides": {
+    "react-helmet-async": {
+      "react": "^19.2.0",
+      "react-dom": "^19.2.0"
+    }
+  },
   "dependencies": {
     "@prismicio/client": "^7.21.1",
     "@prismicio/helpers": "^2.3.9",
