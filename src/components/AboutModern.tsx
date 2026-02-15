@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState } from 'react';
-import { motion, useInView, useMotionValue, animate, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import { motion } from 'framer-motion';
 
 import CardSwap, { Card } from './CardSwap';
 
@@ -27,28 +27,6 @@ const maskChildVariant = {
 const fadeInUpVariant = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" as const } }
-};
-
-// --- HELPER COMPONENT: ANIMATED COUNTER ---
-const AnimatedCounter = ({ from, to }: { from: number; to: number }) => {
-  const count = useMotionValue(from);
-  const rounded = useTransform(count, (latest: number) => Math.round(latest));
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [displayValue, setDisplayValue] = useState(from);
-
-  useEffect(() => {
-    if (isInView) {
-      const controls = animate(count, to, { duration: 2.5, ease: "easeOut" });
-      return controls.stop;
-    }
-  }, [isInView, count, from, to]);
-
-  useEffect(() => {
-    rounded.on("change", (v: number) => setDisplayValue(v));
-  }, [rounded]);
-
-  return <span ref={ref}>{displayValue}</span>;
 };
 
 export default function AboutModern({ isMobile }: { isMobile: boolean }) {
@@ -136,47 +114,6 @@ export default function AboutModern({ isMobile }: { isMobile: boolean }) {
                      </motion.div>
                   </div>
                 </div>
-
-                {/* Stats Grid - Hidden on Mobile */}
-                {!isMobile && (
-                <motion.div variants={fadeInUpVariant} style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(3, 1fr)', 
-                  gap: '32px', 
-                  borderTop: '1px solid rgba(0,0,0,0.1)', 
-                  paddingTop: '48px', 
-                  marginTop: '16px' 
-                }}>
-                  {/* Stat 1 */}
-                  <div>
-                    <h3 style={{ fontSize: '60px', fontWeight: 'bold', marginBottom: '8px', display: 'flex', margin: 0 }}>
-                      <AnimatedCounter from={0} to={120} /><span style={{ fontSize: '24px', verticalAlign: 'top', color: '#9ca3af' }}>+</span>
-                    </h3>
-                    <p style={{ fontSize: '12px', fontWeight: 'bold', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6b7280', margin: 0 }}>Projects</p>
-                  </div>
-                  {/* Stat 2 */}
-                  <div style={{ 
-                    borderLeft: '1px solid rgba(0,0,0,0.1)', 
-                    paddingLeft: '32px'
-                  }}>
-                    <h3 style={{ fontSize: '60px', fontWeight: 'bold', marginBottom: '8px', display: 'flex', margin: 0 }}>
-                      <AnimatedCounter from={0} to={85} /><span style={{ fontSize: '24px', verticalAlign: 'top', color: '#9ca3af' }}>+</span>
-                    </h3>
-                    <p style={{ fontSize: '12px', fontWeight: 'bold', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6b7280', margin: 0 }}>Happy Clients</p>
-                  </div>
-                  {/* Stat 3 */}
-                  <div style={{ 
-                    borderLeft: '1px solid rgba(0,0,0,0.1)', 
-                    paddingLeft: '32px'
-                  }}>
-                    <h3 style={{ fontSize: '60px', fontWeight: 'bold', marginBottom: '8px', display: 'flex', margin: 0 }}>
-                      <AnimatedCounter from={0} to={42} />
-                    </h3>
-                    <p style={{ fontSize: '12px', fontWeight: 'bold', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6b7280', margin: 0 }}>Design Awards</p>
-                  </div>
-                </motion.div>
-                )}
-                
 
             </motion.div>
           </div>
